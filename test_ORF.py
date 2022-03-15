@@ -46,7 +46,7 @@ with open("ORF.fa", "w") as file:
         file.write("\n")
         file.write(seq)
         file.write("\n")
-
+file.close()
 
 
 
