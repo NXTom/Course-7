@@ -34,7 +34,7 @@ def gui():
     global cl1
     cl1 = StringVar()
     lb1 = Label(text="Database:",bg="#e5e5e5").place(x=30,y=270, anchor="sw")
-    dr1 = OptionMenu(window,cl1,"NR","nog een","nog twee").place(x=120,
+    dr1 = OptionMenu(window,cl1,"NR","refseq_select","PDB").place(x=120,
                                                                  y=247)
     radio = IntVar()
     lb2 = Label(text="Expected:",bg="#e5e5e5").place(x=30,y=325, anchor="sw")
@@ -68,7 +68,7 @@ def gui():
     lb7 = Label(text="MegaBlast:",bg="#e5e5e5").place(x=30,y=575, anchor="sw")
     dr7 = OptionMenu(window,cl7,"TRUE","FALSE").place(x=120,y=552)
 
-    blast_B = Button(window,text="BLAST",bg="#15616d", fg= "white", font= "bold 30", command = get_Para).place(x=550,y=650)
+    blast_B = Button(window,text="BLAST",bg="#15616d", fg= "white", font= "bold 30", command = get_Para).place(x=750,y=650)
 
 
     window.mainloop()
