@@ -107,9 +107,9 @@ def gui():
                                                        anchor="sw")
     dr7 = OptionMenu(window, cl7, "TRUE", "FALSE").place(x=120, y=552)
 
-    blast_B = Button(window, text="BLAST", bg="#15616d", fg="white",
-                     font="bold 30", command=get_Para).place(x=750,
-                                                             y=650)
+    blast_B = Button(window, text="BLAST", bg="#3e3e3e", fg="white",
+                     font="bold 30", highlightbackground="#3e3e3e",
+                     command=get_Para).place(x=750,y=650)
 
     window.mainloop()
     # Returning all the BLAST parameters
