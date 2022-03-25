@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
+import main_app
 
 
 def openFile():
@@ -7,13 +8,13 @@ def openFile():
     Opens a chosen file based on the filepath
     :return: filepath
     """
+    global filepath
     filepath = filedialog.askopenfilename(
         initialdir="/Users/ozlemseyrani/desktop")
     file = open(filepath, "r")
-    print(file.read())
-    print(filepath)
+   # print(file.read())
+   # print(filepath)
     file.close()
-    return filepath
 
 
 def gui():
@@ -46,6 +47,7 @@ def gui():
     # DropdownMenu and Label for ORF min Length
     global cl0
     cl0 = IntVar()
+    cl0.set(150)
     lb_orf = Label(text="Minimale ORF length (nt)", bg="#e5e5e5") \
         .place(x=30, y=150)
     dr0 = OptionMenu(window, cl0, 30, 75, 150).place(x=200, y=150)
@@ -53,67 +55,68 @@ def gui():
     # DropdownMenu for the Databases
     global cl1
     cl1 = StringVar()
+    cl1.set("nr")
     lb1 = Label(text="Database:", bg="#e5e5e5").place(x=30, y=270,
                                                       anchor="sw")
-    dr1 = OptionMenu(window, cl1, "NR", "refseq_select", "PDB") \
+    dr1 = OptionMenu(window, cl1, "nr", "refseq_select", "PDB") \
         .place(x=120, y=247)
 
-    # RadioButtons for Expected E value
-    global radio
-    radio = IntVar()
-    lb2 = Label(text="Expected:", bg="#e5e5e5").place(x=30, y=325,
+    # Entry for Expected E value
+    lb2 = Label(text="Expected:       1e-", bg="#e5e5e5").place(x=30, y=325,
                                                       anchor="sw")
-    ch2 = Radiobutton(text="e-20", variable=radio, value=20) \
-        .place(x=120, y=302)
-    ch2_1 = Radiobutton(text="e-30", variable=radio, value=30) \
-        .place(x=180, y=302)
-    ch2_1 = Radiobutton(text="e-40", variable=radio, value=40) \
-        .place(x=240, y=302)
+    global entry1
+    entry_e = Entry(window)
+    entry_e.place(x=124,y=310)
 
     # DropdownMenu for the Word size.
     global cl3
     cl3 = IntVar()
+    cl3.set(32)
     lb3 = Label(text="Word Size:", bg="#e5e5e5").place(x=30, y=375,
                                                        anchor="sw")
     dr3 = OptionMenu(window, cl3, 16, 32, 128).place(x=120, y=352)
 
-    # DropdownMenu for the wanted Blast Matrix
-    global cl4
-    cl4 = StringVar()
-    lb4 = Label(text="Matrix:", bg="#e5e5e5").place(x=30, y=425,
-                                                    anchor="sw")
-    dr4 = OptionMenu(window, cl4, "PAM30", "PAM70", "BLOSUM80",
-                     "BLOSUM45").place(x=120, y=402)
+    # # DropdownMenu for the wanted Blast Matrix
+    # global cl4
+    # cl4 = StringVar()
+    # cl4.set("")
+    # lb4 = Label(text="Matrix:", bg="#e5e5e5").place(x=30, y=425,
+    #                                                 anchor="sw")
+    # dr4 = OptionMenu(window, cl4, "PAM30", "PAM70", "BLOSUM80",
+    #                  "BLOSUM45").place(x=120, y=402)
 
     # DropdownMenu for the organism name/taxID
     global cl5
     cl5 = StringVar()
-    lb5 = Label(text="Organism:", bg="#e5e5e5").place(x=30, y=475,
+    cl5.set("Eukaryote")
+    lb5 = Label(text="Organism:", bg="#e5e5e5").place(x=30, y=425,
                                                       anchor="sw")
     e5 = OptionMenu(window, cl5, "Eukaryote", "Prokaryote", "Archaea",
-                    "Yeast", "Fungi").place(x=120, y=452)
+                    "Yeast", "Fungi").place(x=120, y=402)
 
     # DropdownMenu for the hitlist length
     global cl6
     cl6 = IntVar()
-    lb6 = Label(text="Hitlist length:", bg="#e5e5e5").place(x=30, y=525,
+    cl6.set(10)
+    lb6 = Label(text="Hitlist length:", bg="#e5e5e5").place(x=30, y=475,
                                                             anchor="sw")
-    ch6 = OptionMenu(window, cl6, 10, 50, 100).place(x=120, y=502)
+    ch6 = OptionMenu(window, cl6, 10, 50, 100).place(x=120, y=452)
 
     # DropdownMenu for MegaBlast options
     global cl7
     cl7 = StringVar()
-    lb7 = Label(text="MegaBlast:", bg="#e5e5e5").place(x=30, y=575,
+    cl7.set(True)
+    lb7 = Label(text="MegaBlast:", bg="#e5e5e5").place(x=30, y=525,
                                                        anchor="sw")
-    dr7 = OptionMenu(window, cl7, "TRUE", "FALSE").place(x=120, y=552)
+    dr7 = OptionMenu(window, cl7, "True", "False").place(x=120, y=502)
 
-    blast_B = Button(window, text="BLAST", bg="#3e3e3e", fg="white",
+    blast_B = Button(window, text="BLAST", bg="#15616d", fg="white",
                      font="bold 30", highlightbackground="#3e3e3e",
                      command=get_Para).place(x=750,y=650)
 
     window.mainloop()
     # Returning all the BLAST parameters
-    return cl0, cl1, radio, cl3, cl4, cl6, cl7
+    return cl0, cl1, cl3, cl6, cl7
 
 
 def get_Para():
@@ -128,19 +131,17 @@ def get_Para():
     # List for the BLAST parameters
     selection_BLAST = []
     selection_BLAST.append(cl1.get())
-    selection_BLAST.append(radio.get())
+    selection_BLAST.append("1e-"+ entry1.get())
     selection_BLAST.append(cl3.get())
-    selection_BLAST.append(cl4.get())
+ #   selection_BLAST.append(cl4.get())
     selection_BLAST.append(cl5.get())
     selection_BLAST.append(cl6.get())
     selection_BLAST.append(cl7.get())
 
-    print(selection_ORF)
-    print(selection_BLAST)
+    main_app.maintest(filepath, selection_ORF, selection_BLAST)
     return selection_BLAST, selection_ORF
 
 
 if __name__ == '__main__':
     gui()
     bestand = openFile
-    print(bestand)
