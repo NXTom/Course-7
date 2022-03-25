@@ -13,7 +13,7 @@ def parameters_check_blastn(selection_BLAST):
     """
     evalue = True
     # expect: afhankelijk van hoe e-value wordt meegegeven vanuit GUI
-    if selection_BLAST[1] != int:
+    if selection_BLAST[1] == "1e-":
         evalue = False
     elif 0 >= float(selection_BLAST[1]) >= 1:
         evalue = False
