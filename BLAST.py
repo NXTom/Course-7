@@ -13,7 +13,7 @@ def parameters_check_blastn(selection_BLAST):
     """
     evalue = True
     # expect: afhankelijk van hoe e-value wordt meegegeven vanuit GUI
-    if 1e0 >= selection_BLAST[1] >= 1e1:
+    if 0 >= selection_BLAST[1] >= 1:
         evalue = False
 
     # organism adjustments
