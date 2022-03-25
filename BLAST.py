@@ -54,3 +54,12 @@ def blastn(selection_BLAST):
     result_handle.close()
 
     print("The BLAST has finished")
+
+
+def main_blast(selection_BLAST):
+    evalue, selection_BLAST = parameters_check_blastn(selection_BLAST)
+
+    if evalue:
+        blastn(selection_BLAST)
+    else:
+        quit()
