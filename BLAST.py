@@ -1,73 +1,56 @@
 from Bio.Blast import NCBIWWW
-from time import sleep
 
 
-# def read_orf(file):
-#     """
-#     Reads and places the ORFs from the ORF-finder generated file in a list.
-#
-#             Parameters:
-#                     file (file): File containing ORFs generated with the ORF-finder class
-#
-#             Returns:
-#                     orf_list (list): A list containing all the ORFs from the ORF-file
-#     """
-#     seq = ""
-#     orf_headers, orf_seqs = [], []
-#
-#     with open(file) as file:
-#         for line in file:
-#             if line.startswith(">"):
-#                 if seq == "":
-#                     header = line.strip()
-#                 else:
-#                     headers.append(header)
-#                     seqs.append(seq)
-#                     header = line.strip()
-#                     seq = ""
-#             else:
-#                 seq += line.strip()
-#         seqs.append(seq)
-#
-#     return orf_headers, orf_seqs
-#
-#
-# def parameters_check_blastn(parameters):
-#     """
-#     Checks the user given parameters for invalid values.
-#
-#             Parameters:
-#                     parameters (list): A list of all adjustable parameters,
-#
-#             Returns:
-#     """
-#     # afhankelijk van hoe parameters doorgegeven worden.
-
-
-def blastn():
+def parameters_check_blastn(selection_BLAST):
     """
-    BLASTs the ORFs
+    Checks the user given parameters for invalid values.
 
             Parameters:
-                    seqs (list): List of ORF sequences
+                    selection_BLAST (list): A list of all adjustable parameters
 
             Returns:
-
+                    selection_BLAST (list): A list of BLAST parameters
     """
-    sequence_data = open("orf__all.fa").read()
-    result_handle = NCBIWWW.qblast("blastp", "refseq_protein", sequence_data, entrez_query="txid4892[ORGN]", hitlist_size=10)
+    evalue = True
+    # expect: afhankelijk van hoe e-value wordt meegegeven vanuit GUI
+    if 1e0 >= selection_BLAST[1] >= 1e1:
+        evalue = False
 
-    #with open("ORF_XML/ORF%s.xml" % i, "w") as out_handle:
+    # organism adjustments
+    if selection_BLAST[4] == "Eukaryote":
+        selection_BLAST[4] = "txid2759[ORGN]"
+    elif selection_BLAST[4] == "Prokaryote":
+        selection_BLAST[4] = "txid2[ORGN]"
+    elif selection_BLAST[4] == "Archaea":
+        selection_BLAST[4] = "txid2157[ORGN]"
+    elif selection_BLAST[4] == "Yeast":
+        selection_BLAST[4] = "txid4892[ORGN]"
+    elif selection_BLAST[4] == "Fungi":
+        selection_BLAST[4] = "txid4751[ORGN]"
+
+    return evalue, selection_BLAST
+
+
+def blastn(selection_BLAST):
+    """
+    BLASTs the ORFs
+            Parameters:
+                    selection_BLAST (list): List of BLAST parameters
+            Returns:
+                    ORF.xml (file): one XML file with all BLAST results
+    """
+    sequence_data = open("ORF.fa").read()
+    result_handle = NCBIWWW.qblast("blastn", selection_BLAST[0],
+                                   sequence_data,
+                                   expect=selection_BLAST[1],
+                                   word_size=selection_BLAST[2],
+                                   # matrix_name=selection_BLAST[3],
+                                   entrez_query=selection_BLAST[4],
+                                   hitlist_size=selection_BLAST[5],
+                                   megablast=selection_BLAST[6])
+
     with open("ORF_XML/ORF.xml", "w") as out_handle:
         out_handle.write(result_handle.read())
     result_handle.close()
 
-    print("klaar")
-
-
-if __name__ == "__main__":
-    #orf_file = "ORF__all.fa"
-
-    #headers, seqs = read_orf(orf_file)
-    #parameters_check_blastn(parameters)
-    blastn()
+    print("The BLAST has finished")
