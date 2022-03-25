@@ -47,7 +47,16 @@ def Frame_finder(scaf_header, scaf_seq):
 
     return frames, description
 
-def ORF_finder(frames):
+def get_par_ORF(ORF_par):
+    for i in ORF_par:
+        min_length = i
+        if min_length != 75:
+            min_lenth = min_length
+        else:
+            min_length = 75
+    return min_length
+
+def ORF_finder(frames, min_length):
     """
     Looping over all frames and looking for ORFs from stop to stop codons. The ORFs found were
     stored into the list listOfOrf.
@@ -63,10 +72,11 @@ def ORF_finder(frames):
             if frames[i][start]=="TAA" or frames[i][start]=="TAG" or frames[i][start]=="TGA":
                 for stop in range(start+1,len(frames[i]),1):
                              if frames[i][stop]=="TAA" or  frames[i][stop]=="TAG" or  frames[i][stop]=="TGA" :
+                                 if (len(frames[i][start:stop])*3) >= min_length: # filters on minimal length
                                     listOfOrf.append(frames[i][start:stop]) # retrieve the orf
-                                    listOfFrame.append(i)
-                                    start=stop+1 # avoiding multiple start codons
-                                    break
+                                    listOfFrame.append(i) # retrieve reading frame
+                                 start=stop+1 # avoiding multiple start codons
+                                 break
             start+=1
     return listOfOrf, listOfFrame
 
@@ -92,10 +102,19 @@ def Write_Orf_Fasta(listOfOrf, listOfFrame, description):
             file.write(seq)
             file.write("\n")
             seq = ""
-    file.close() # closed the file.
+    file.close()
 
-if __name__ == '__main__':
-    scaf_header, scaf_seq = read_Scaffold(file_scaffold= "SD (1).fa")
+def main_ORF(bestand, ORF_par):
+    scaf_header, scaf_seq = read_Scaffold(file_scaffold= bestand)
     frames, description = Frame_finder(scaf_header, scaf_seq)
-    listOfOrf, listOfFrame = ORF_finder(frames)
+    min_length = get_par_ORF(ORF_par)
+    listOfOrf, listOfFrame = ORF_finder(frames, min_length)
     Write_Orf_Fasta(listOfOrf, listOfFrame, description)
+
+
+
+
+
+
+
+
