@@ -66,8 +66,8 @@ def gui():
                                                                 y=325,
                                                       anchor="sw")
     global entry1
-    entry_e = Entry(window)
-    entry_e.place(x=150,y=300)
+    entry1 = Entry(window)
+    entry1.place(x=150,y=300)
 
     # DropdownMenu for the Word size.
     global cl3
