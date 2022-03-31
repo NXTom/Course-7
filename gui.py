@@ -120,7 +120,6 @@ def get_Para():
     # List for the BLAST parameters
     selection_blast = [cl1.get(), "1e-" + entry1.get(), cl3.get(), cl5.get(),
                        cl6.get(), cl7.get()]
-    messagebox.showinfo(title="Runtime update", message="Blast has started")
     main_app.maintest(filepath, selection_orf, selection_blast)
     return selection_blast, selection_orf
 
