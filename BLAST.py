@@ -3,55 +3,55 @@ from Bio.Blast import NCBIXML
 from tkinter import messagebox
 
 
-def parameters_check_blastn(selection_BLAST):
+def parameters_check_blastn(selection_blast):
     """
     Checks the user given parameters for invalid values.
-    :param selection_BLAST: list - list containing the BLAST parameters
+    :param selection_blast: list - list containing the BLAST parameters
     :return evalue: boolean - if evalue is invalid returns false
-            selection_BLAST: list - returns parameters list with tax id
+            selection_blast: list - returns parameters list with tax id
     """
     evalue = True
     # Looks for invalid e-values and cancels the BLAST
-    if selection_BLAST[1] == "1e-":
+    if selection_blast[1] == "1e-":
         evalue = False
         messagebox.showwarning(title="Error", message="Invalid E-value")
-    elif selection_BLAST[1].split("-")[1].isalpha():
-        print(selection_BLAST[1].isalpha())
+    elif selection_blast[1].split("-")[1].isalpha():
+        print(selection_blast[1].isalpha())
         evalue = False
         messagebox.showwarning(title="Error", message="Invalid E-value")
-    elif 0 >= float(selection_BLAST[1]) >= 1:
+    elif 0 >= float(selection_blast[1]) >= 1:
         evalue = False
         messagebox.showwarning(title="Error", message="Invalid E-value")
 
     # Changes organism to their corresponding taxid
-    if selection_BLAST[3] == "Eukaryote":
-        selection_BLAST[3] = "txid2759[ORGN]"
-    elif selection_BLAST[3] == "Prokaryote":
-        selection_BLAST[3] = "txid2[ORGN]"
-    elif selection_BLAST[3] == "Archaea":
-        selection_BLAST[3] = "txid2157[ORGN]"
-    elif selection_BLAST[3] == "Yeast":
-        selection_BLAST[3] = "txid4892[ORGN]"
-    elif selection_BLAST[3] == "Fungi":
-        selection_BLAST[3] = "txid4751[ORGN]"
+    if selection_blast[3] == "Eukaryote":
+        selection_blast[3] = "txid2759[ORGN]"
+    elif selection_blast[3] == "Prokaryote":
+        selection_blast[3] = "txid2[ORGN]"
+    elif selection_blast[3] == "Archaea":
+        selection_blast[3] = "txid2157[ORGN]"
+    elif selection_blast[3] == "Yeast":
+        selection_blast[3] = "txid4892[ORGN]"
+    elif selection_blast[3] == "Fungi":
+        selection_blast[3] = "txid4751[ORGN]"
 
-    return evalue, selection_BLAST
+    return evalue, selection_blast
 
 
-def blastn(selection_BLAST):
+def blastn(selection_blast):
     """
     Calling biopython's BLAST function to BLAST the ORFs
-    :param selection_BLAST: list - list containing the BLAST parameters
+    :param selection_blast: list - list containing the BLAST parameters
     :return: ORF.xml: file - one XML file containing all BLAST results
     """
     sequence_data = open("ORF.fa").read()
-    result_handle = NCBIWWW.qblast("blastn", selection_BLAST[0],
+    result_handle = NCBIWWW.qblast("blastn", selection_blast[0],
                                    sequence_data,
-                                   expect=selection_BLAST[1],
-                                   word_size=selection_BLAST[2],
-                                   entrez_query=selection_BLAST[3],
-                                   hitlist_size=selection_BLAST[4],
-                                   megablast=selection_BLAST[5])
+                                   expect=selection_blast[1],
+                                   word_size=selection_blast[2],
+                                   entrez_query=selection_blast[3],
+                                   hitlist_size=selection_blast[4],
+                                   megablast=selection_blast[5])
 
     # saves the XML in a new Record variable
     blast_records = NCBIXML.parse(result_handle)
@@ -96,15 +96,13 @@ def xml_to_fasta(blast_records):
                     file.write("\n")
 
 
-
-
-def main_blast(selection_BLAST):
+def main_blast(selection_blast):
     """
     Calls the two functions from the BLAST script
-    :param selection_BLAST: list - list containing the BLAST parameters
+    :param selection_blast: list - list containing the BLAST parameters
     """
-    evalue, selection_BLAST = parameters_check_blastn(selection_BLAST)
+    evalue, selection_blast = parameters_check_blastn(selection_blast)
 
     # If the e-value is valid, calls the BLAST function
     if evalue:
-        blastn(selection_BLAST)
+        blastn(selection_blast)
