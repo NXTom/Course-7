@@ -10,7 +10,7 @@ def openFile():
     """
     global filepath
     filepath = filedialog.askopenfilename(
-        initialdir="/Users/ozlemseyrani/desktop")
+        initialdir="/Users/tomvandergreft/desktop")
     file = open(filepath, "r")
    # print(file.read())
    # print(filepath)
@@ -34,7 +34,8 @@ def gui():
 
     button = Button(text="file", command=openFile).place(relx=0.5,
                                                          rely=0.05,
-                                                         anchor="center")
+                                                         anchor=
+                                                         "center")
 
     # labels for structure in the GUI
     label_orf = Label(text="ORFfinder" + (" " * 184), font="bold 18",
@@ -62,11 +63,12 @@ def gui():
         .place(x=120, y=247)
 
     # Entry for Expected E value
-    lb2 = Label(text="Expected:       1e-", bg="#e5e5e5").place(x=30, y=325,
+    lb2 = Label(text="Expected:       1e-", bg="#e5e5e5").place(x=30,
+                                                                y=325,
                                                       anchor="sw")
     global entry1
     entry_e = Entry(window)
-    entry_e.place(x=124,y=310)
+    entry_e.place(x=150,y=300)
 
     # DropdownMenu for the Word size.
     global cl3
@@ -75,15 +77,6 @@ def gui():
     lb3 = Label(text="Word Size:", bg="#e5e5e5").place(x=30, y=375,
                                                        anchor="sw")
     dr3 = OptionMenu(window, cl3, 16, 32, 128).place(x=120, y=352)
-
-    # # DropdownMenu for the wanted Blast Matrix
-    # global cl4
-    # cl4 = StringVar()
-    # cl4.set("")
-    # lb4 = Label(text="Matrix:", bg="#e5e5e5").place(x=30, y=425,
-    #                                                 anchor="sw")
-    # dr4 = OptionMenu(window, cl4, "PAM30", "PAM70", "BLOSUM80",
-    #                  "BLOSUM45").place(x=120, y=402)
 
     # DropdownMenu for the organism name/taxID
     global cl5
@@ -110,7 +103,7 @@ def gui():
                                                        anchor="sw")
     dr7 = OptionMenu(window, cl7, "True", "False").place(x=120, y=502)
 
-    blast_B = Button(window, text="BLAST", bg="#15616d", fg="white",
+    blast_B = Button(window, text="BLAST", bg="#e5e5e5", fg="white",
                      font="bold 30", highlightbackground="#3e3e3e",
                      command=get_Para).place(x=750,y=650)
 
@@ -133,7 +126,6 @@ def get_Para():
     selection_BLAST.append(cl1.get())
     selection_BLAST.append("1e-"+ entry1.get())
     selection_BLAST.append(cl3.get())
- #   selection_BLAST.append(cl4.get())
     selection_BLAST.append(cl5.get())
     selection_BLAST.append(cl6.get())
     selection_BLAST.append(cl7.get())
