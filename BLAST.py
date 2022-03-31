@@ -57,6 +57,8 @@ def blastn(selection_blast):
     blast_records = NCBIXML.parse(result_handle)
     # Writes the information from blast_records to a fasta file
     xml_to_fasta(blast_records)
+    messagebox.showinfo(title="Runtime update", message="The FAA analysis is "
+                                                        "complete")
 
 
 def xml_to_fasta(blast_records):

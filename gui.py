@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from tkinter import filedialog
 import main_app
 
@@ -11,8 +12,6 @@ def openFile():
     global filepath
     filepath = filedialog.askopenfilename()
     file = open(filepath, "r")
-   # print(file.read())
-   # print(filepath)
     file.close()
 
 
@@ -33,8 +32,7 @@ def gui():
 
     button = Button(text="file", command=openFile).place(relx=0.5,
                                                          rely=0.05,
-                                                         anchor=
-                                                         "center")
+                                                         anchor="center")
 
     # labels for structure in the GUI
     label_orf = Label(text="ORFfinder" + (" " * 184), font="bold 18",
@@ -64,10 +62,10 @@ def gui():
     # Entry for Expected E value
     lb2 = Label(text="Expected:       1e-", bg="#e5e5e5").place(x=30,
                                                                 y=325,
-                                                      anchor="sw")
+                                                                anchor="sw")
     global entry1
     entry1 = Entry(window)
-    entry1.place(x=150,y=300)
+    entry1.place(x=150, y=300)
 
     # DropdownMenu for the Word size.
     global cl3
@@ -102,9 +100,9 @@ def gui():
                                                        anchor="sw")
     dr7 = OptionMenu(window, cl7, "True", "False").place(x=120, y=502)
 
-    blast_B = Button(window, text="BLAST", bg="#e5e5e5", fg="white",
+    blast_b = Button(window, text="BLAST", bg="#e5e5e5", fg="white",
                      font="bold 30", highlightbackground="#3e3e3e",
-                     command=get_Para).place(x=750,y=650)
+                     command=get_Para).place(x=750, y=650)
 
     window.mainloop()
     # Returning all the BLAST parameters
@@ -114,23 +112,17 @@ def gui():
 def get_Para():
     """
     Gets all the given parameters and puts them in seperated Lists
-    :return: selection_BLAST, selection_ORF
+    :return: selection_blast, selection_orf
     """
     # List for the ORF parameter
-    selection_ORF = []
-    selection_ORF.append(cl0.get())
+    selection_orf = [cl0.get()]
 
     # List for the BLAST parameters
-    selection_BLAST = []
-    selection_BLAST.append(cl1.get())
-    selection_BLAST.append("1e-"+ entry1.get())
-    selection_BLAST.append(cl3.get())
-    selection_BLAST.append(cl5.get())
-    selection_BLAST.append(cl6.get())
-    selection_BLAST.append(cl7.get())
-
-    main_app.maintest(filepath, selection_ORF, selection_BLAST)
-    return selection_BLAST, selection_ORF
+    selection_blast = [cl1.get(), "1e-" + entry1.get(), cl3.get(), cl5.get(),
+                       cl6.get(), cl7.get()]
+    messagebox.showinfo(title="Runtime update", message="Blast has started")
+    main_app.maintest(filepath, selection_orf, selection_blast)
+    return selection_blast, selection_orf
 
 
 if __name__ == '__main__':
